@@ -1,6 +1,14 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "paths": {
+      "app/*": [
+        "src/app/*",
+      ],
+      "cc-icons/*": [
+        "src/cc-icons/svg/*"
+      ],
+    },
     "outDir": "dist",
     "allowJs": true,
     "sourceMap": true,
@@ -34,7 +42,7 @@
     "node_modules",
     "**/*.test.tsx",
     "**/*.spec.ts"
-  ],
+  ], 
   "types": [
     "typePatches"
   ],

@@ -3,8 +3,14 @@ package com.dooboo;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import org.reactnative.camera.RNCameraPackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.tradle.react.UdpSocketsModule;
+import com.peel.react.TcpSocketsModule;
+import com.bitgo.randombytes.RandomBytesPackage;
+import com.peel.react.rnos.RNOSModule;
 import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
@@ -25,9 +31,15 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNGestureHandlerPackage(),
-            new ReactNativeLocalizationPackage()
-      );
+            new RNCameraPackage(),
+            new VectorIconsPackage(),
+            new UdpSocketsModule(),
+            new TcpSocketsModule(),
+            new RandomBytesPackage(),
+            new RNOSModule(),
+            new ReactNativeLocalizationPackage(),
+            new RNGestureHandlerPackage()
+          );
     }
 
     @Override

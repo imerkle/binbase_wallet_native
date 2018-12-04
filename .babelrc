@@ -3,18 +3,29 @@
   "sourceMaps": "inline",
   "plugins": [
     [
-      "@babel/plugin-proposal-decorators",
-      {
-        "legacy": true
-      }
-    ],
-    [
       "@babel/plugin-transform-runtime",
       {
         "helpers": true,
         "regenerator": false
       }
     ],
-    "@babel/proposal-object-rest-spread"
+    "@babel/proposal-object-rest-spread",
+    [
+      "module-resolver",
+      {
+        "root": ["./src/"],     
+        "extensions": [".ts", ".js", ".ios.js", ".android.js"],           
+        "alias": {
+          "app": "./src/app",
+          "cc-icons": "./src/cc-icons/svg"
+        }    
+      }
+    ],
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        "legacy": true
+      }
+    ]    
   ]
 }
