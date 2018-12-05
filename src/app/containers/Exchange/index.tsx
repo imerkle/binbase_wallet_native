@@ -2,7 +2,7 @@ import * as React from 'react';
 import { observer, inject } from 'mobx-react';
 import { toJS } from 'mobx';
 import { Snackbar, Button, Text, TextInput, IconButton, } from 'react-native-paper';
-import { Modal, View, StyleSheet, Clipboard } from 'react-native';
+import { Dimensions, ScrollView, Linking, TouchableOpacity, Modal, View, StyleSheet, Clipboard } from 'react-native';
 import { 
   getAtomicValue,
   getConfig,
@@ -14,6 +14,8 @@ import FeeBox from './FeeBox';
 import QR from './QR';
 import QRG from './QRG';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+import formatDistance from 'date-fns/formatDistance';
 
 const styles = StyleSheet.create({
 	uppercase: {
@@ -61,7 +63,24 @@ const styles = StyleSheet.create({
     	marginHorizontal: 0,
     	padding: 20,
     	zIndex: 1,
-	}
+	},
+  tx_pending: {
+    opacity: .5,
+    fontStyle: "italic",    
+  },
+  got:{
+      borderRadius: 4,
+      padding: 4,
+      backgroundColor: "#23ff23",
+  },
+  sent:{
+      borderRadius: 4,
+      padding: 4,
+      backgroundColor: "#fc1888",
+  },
+  tx_box_text: {
+     fontSize: 11,
+  }
 });
 const textInputColors = {background: "#303030", primary: "#FFF", placeholder: "#4D4D4D", disabled: "gray"};
 
@@ -111,7 +130,7 @@ class Exchange extends React.Component<any, any>{
 
     return (
       <View style={{flex: 1, padding: 10}}>
-		<Snackbar style={{backgroundColor: "#000"}} onDismiss={() => {appStore.snackOpen(false)}} visible={appStore.snackopen} >{appStore.snackmsg}</Snackbar>      
+      <ScrollView style={{zIndex: 1, flex: 1}}>
         <View style={{zIndex: 1, flexDirection: "row", justifyContent: "space-between"}}>
           <View>
             <Text style={styles.uppercase}>{`${rel} Balance`.toUpperCase()}{} </Text>
@@ -197,9 +216,44 @@ class Exchange extends React.Component<any, any>{
           onPress={this.send}>Send</Button>
         </View>
 
+        {txs.length > 0 &&
+          <View style={styles.tx_box}>
+          <View>
+            <View style={{flexDirection: "row"}}>
+            <Text style={[{flex: .3},styles.tx_header]}>TxHash</Text>
+            <Text style={[{flex: .2},styles.tx_header]} >Age</Text>
+            <Text style={{flex: .1}} ></Text>
+            <Text style={[{flex: .25},styles.tx_header]} >Value</Text>
+            <Text style={[{flex: .15},styles.tx_header]} >TxFee</Text>
+            </View>
+          {txs.map((o,i)=>{ 
+            return (
+            <TouchableOpacity key={i} style={[{flexDirection: "row", paddingHorizontal: 8}, styles.tx_box_li ,o.confirmations == 0 && styles.tx_pending]} onPress={()=>{
+                Linking.openURL(`${explorer}/tx/${o.hash}`)
+               }}>
+                <Text style={[styles.tx_box_text, {flex: .3}]}>{smartTrim(o.hash, 10)}</Text>
+                <Text style={[styles.tx_box_text, {flex: .2}]}>{o.confirmations == 0 ? (null) : 
+                  formatDistance(new Date(o.timestamp*1000), new Date(), { addSuffix: true })
+                  //moment.unix(o.timestamp).fromNow()
+                }</Text>
+                <View style={{flex: .1, alignItems: "center"}}>
+                  <Text style={[styles.tx_box_text, o.kind == "got" && styles.got, o.kind == "sent" && styles.sent]}>{o.kind == "got" ? "IN": "OUT" }</Text>
+                </View>
+                <Text style={[styles.tx_box_text, {flex: .25}]} >{o.value} {o.asset ? o.asset.ticker : rel}</Text>
+                <Text style={[styles.tx_box_text, {flex: .1}]}>{o.fee}</Text>
+            </TouchableOpacity>
+            )
+          })}
+            <TouchableOpacity onPress={()=>{ Linking.openURL(`${explorer}/address/${exchangeStore.address}`) }}><Text style={{fontWeight: "bold", textDecorationLine: "underline"}}>View all Transactions</Text></TouchableOpacity>
+          </View>
+         </View>
+        }        
+
         <QR toptext={`Scan QR Code`} visible={this.state.qrscan_visible} onRequestClose={()=>{this.setState({qrscan_visible: false })}} onSuccess={(e)=>{ this.setState({addressField: e.data, qrscan_visible: false}) }} />
         <QRG text={address} visible={this.state.qrshow_visible} onRequestClose={()=>{this.setState({qrshow_visible: false })}} />
 
+      </ScrollView>
+      <Snackbar style={{zIndex: 10, backgroundColor: "#000"}} onDismiss={() => {appStore.snackOpen(false)}} visible={appStore.snackopen} >{appStore.snackmsg}</Snackbar>
       </View>
     	)    
   }
