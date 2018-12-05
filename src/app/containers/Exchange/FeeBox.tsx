@@ -37,7 +37,7 @@ class FeeBox extends React.Component<any, any>{
                             style={{flex: 0.5}}
                             mode="outlined"
                             theme={{colors: textInputColors}}
-                            value={exchangeStore.gasLimit}
+                            value={exchangeStore.gasLimit.toString()}
                             onChangeText={(text) => { exchangeStore.setFees(text, 1) }}
                             label={`Gas Limit (in ${fee_label})`} 
                             />
@@ -46,7 +46,7 @@ class FeeBox extends React.Component<any, any>{
                             style={{flex: 0.5}}
                             mode="outlined"
                             theme={{colors: textInputColors}}
-                            value={exchangeStore.gasPrice}
+                            value={exchangeStore.gasPrice.toString()}
                             onChangeText={(text) => { exchangeStore.setFees(text, 2) }}
                             label={`Gas Price (in ${fee_label})`}
                             />
@@ -56,7 +56,7 @@ class FeeBox extends React.Component<any, any>{
                     <TextInput
                         mode="outlined"
                         theme={{colors: textInputColors}}
-                        value={exchangeStore.fees}
+                        value={exchangeStore.fees.toString()}
                         onChangeText={(text) => { exchangeStore.setFees(text) }}
                         label={`Network Fees (${fee_label})`}
                         />

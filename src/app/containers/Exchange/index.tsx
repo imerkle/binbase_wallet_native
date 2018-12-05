@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { observer, inject } from 'mobx-react';
 import { toJS } from 'mobx';
-import { Button, Text, TextInput, IconButton, } from 'react-native-paper';
+import { Snackbar, Button, Text, TextInput, IconButton, } from 'react-native-paper';
 import { Modal, View, StyleSheet, Clipboard } from 'react-native';
 import { 
   getAtomicValue,
@@ -110,7 +110,8 @@ class Exchange extends React.Component<any, any>{
     const { explorer } = getConfig(config, rel, base);
 
     return (
-      <View style={{padding: 10}}>
+      <View style={{flex: 1, padding: 10}}>
+		<Snackbar style={{backgroundColor: "#000"}} onDismiss={() => {appStore.snackOpen(false)}} visible={appStore.snackopen} >{appStore.snackmsg}</Snackbar>      
         <View style={{zIndex: 1, flexDirection: "row", justifyContent: "space-between"}}>
           <View>
             <Text style={styles.uppercase}>{`${rel} Balance`.toUpperCase()}{} </Text>
