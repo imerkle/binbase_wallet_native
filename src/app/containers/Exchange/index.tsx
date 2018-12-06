@@ -52,10 +52,10 @@ const styles = StyleSheet.create({
     	backgroundColor: "rgba(0,0,0,.1)",
     	borderRadius: 4,
     	padding: 10,
-		shadowOffset:{  width: 5,  height: 3 },
-		elevation: 10,
-		shadowColor: '#141111',
-		shadowOpacity: 1.0,
+		  shadowOffset:{  width: 5,  height: 3 },
+		  elevation: 10,
+		  shadowColor: '#141111',
+		  shadowOpacity: 1.0,
     	borderWidth: 1,
     	borderStyle: "solid",
     	borderColor: "#3e3e3e",
@@ -80,6 +80,7 @@ const styles = StyleSheet.create({
   },
   tx_box_text: {
      fontSize: 11,
+     marginVertical: 3,
   }
 });
 const textInputColors = {background: "#303030", primary: "#FFF", placeholder: "#4D4D4D", disabled: "gray"};
@@ -87,9 +88,6 @@ const textInputColors = {background: "#303030", primary: "#FFF", placeholder: "#
 @inject('rootStore')
 @observer
 class Exchange extends React.Component<any, any>{
-  componentWillReceiveProps(){
-    this.init()
-  }
   componentDidMount(){
     this.init()
   }
@@ -98,6 +96,7 @@ class Exchange extends React.Component<any, any>{
     const { navigation } = this.props;
     const base = navigation.getParam('base', '');
     const rel = navigation.getParam('rel', '');
+    console.log(base, rel)
     exchangeStore.setBase(base);
     exchangeStore.setRel(rel);
     if(base && rel){
@@ -112,13 +111,14 @@ class Exchange extends React.Component<any, any>{
     addressError: false,
     qrscan_visible: false,
     qrshow_visible: false,
+    isSending: false,
   }
 
   render(){
     const { classes } = this.props;
     const { configStore, exchangeStore, coinStore, priceStore, appStore } = this.props.rootStore;
     const { address, txs } = exchangeStore;
-    const { addressField, amountField, addressError } = this.state;
+    const { isSending, addressField, amountField, addressError } = this.state;
     const { rel, base } = exchangeStore;
     const config = toJS(configStore.config);
     if(!rel || !base || Object.keys(config).length == 0 ){
@@ -212,7 +212,7 @@ class Exchange extends React.Component<any, any>{
           <Button 
           style={{marginVertical: 10, borderRadius: 5}}
           mode="contained"
-          disabled={!!addressError} 
+          disabled={!!addressError || isSending} 
           onPress={this.send}>Send</Button>
         </View>
 
@@ -232,7 +232,7 @@ class Exchange extends React.Component<any, any>{
                 Linking.openURL(`${explorer}/tx/${o.hash}`)
                }}>
                 <Text style={[styles.tx_box_text, {flex: .3}]}>{smartTrim(o.hash, 10)}</Text>
-                <Text style={[styles.tx_box_text, {flex: .2}]}>{o.confirmations == 0 ? (null) : 
+                <Text style={[styles.tx_box_text, {flex: .2}]}>{o.confirmations == 0 || o.timestamp == null ? (null) : 
                   formatDistance(new Date(o.timestamp*1000), new Date(), { addSuffix: true })
                   //moment.unix(o.timestamp).fromNow()
                 }</Text>
@@ -262,14 +262,14 @@ class Exchange extends React.Component<any, any>{
     const { rel, base } = exchangeStore;
     const { addressError, addressField, amountField } = this.state;
     const config = toJS(configStore.config);
-    
+
     const balance = coinStore.balances[rel];
       return new Promise(async (resolve, reject) => {
         const amt = parseFloat(amountField);
         let fees = exchangeStore.fees / getAtomicValue(config, rel, base);
           
         if(addressError || !addressField){
-          appStore.setSnackMsg("Invalid Bitcoin Address");
+          appStore.setSnackMsg("Invalid Address");
           reject();
         }
         if(isNaN(amt)){
@@ -285,15 +285,22 @@ class Exchange extends React.Component<any, any>{
           reject();
         }
         appStore.setSnackMsg("Transaction is being broadcasted!");
+        this.setState({
+          isSending: true,
+        });            
         try{
           const {txid} = await exchangeStore.send(addressField, amt)
           appStore.setSnackMsg(`Transaction broadcast completed. tx: ${txid}`);
           this.setState({
             addressField: "",
             amountField: "",
+            isSending: false,
           });
           resolve();
         }catch(e){
+          this.setState({
+            isSending: false,
+          });
           appStore.setSnackMsg("Transaction Failed to broadcast!");
           reject(e);
         }

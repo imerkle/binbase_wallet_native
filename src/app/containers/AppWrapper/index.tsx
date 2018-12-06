@@ -13,7 +13,7 @@ import {
 } from 'react-native';
 import Menu from './Menu';
 //import SideMenu from 'react-native-side-menu';
-import { NavigationActions } from 'react-navigation';
+import { DrawerActions, NavigationActions } from 'react-navigation';
 
 @inject('rootStore')
 @observer
@@ -28,21 +28,16 @@ class AppWrapper extends React.Component<any, any>{
     }
     onMenuItemSelected2 = (rel) => {
         this.props.rootStore.exchangeStore.setRel(rel)
+        this.props.rootStore.exchangeStore.init()
         this.props.navigation.navigate('Exchange', {
           rel: rel,
           base: this.base,
-        });        
+        });
+        DrawerActions.closeDrawer()
     }  
     toggleSort = (i) => {
       //add later sort by coin/price
     }
-    navigateToScreen = (route) => () => {
-      const navigateAction = NavigationActions.navigate({
-        routeName: route
-      });
-      this.props.navigation.dispatch(navigateAction);
-      this.props.navigation.dispatch(DrawerActions.closeDrawer()) 
-    }    
     render() {
         const { children } = this.props;
         const { appStore, exchangeStore, priceStore, coinStore, configStore } = this.props.rootStore;
