@@ -96,7 +96,6 @@ class Exchange extends React.Component<any, any>{
     const { navigation } = this.props;
     const base = navigation.getParam('base', '');
     const rel = navigation.getParam('rel', '');
-    console.log(base, rel)
     exchangeStore.setBase(base);
     exchangeStore.setRel(rel);
     if(base && rel){
