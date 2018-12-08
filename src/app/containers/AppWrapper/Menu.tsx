@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { Button, TouchableRipple, Text, List, FAB } from 'react-native-paper';
 import {toJS} from 'mobx';
+import { MAX_DECIMAL, MAX_DECIMAL_FIAT } from 'app/constants';
 
 const color_86 = '#868686';
 const fontSize_11 = 11;
@@ -204,11 +205,11 @@ export default function Menu({ config, rel, base, onItemSelected, onItemSelected
 	                     	
 	                     	<View style={{flex: 0.3}}>
 	                          	<Text style={styles.rel}>{ox}</Text>
-	                            <Text style={styles.vol}>{fiat.symbol}{+(price_usd* balance.balance).toFixed(2)}</Text>    
+	                            <Text style={styles.vol}>{fiat.symbol}{+(price_usd* balance.balance).toFixed(MAX_DECIMAL_FIAT)}</Text>    
 	                      	</View>
 
 	                      	<View style={{flex: 0.5}}>
-	                            <Text style={styles.price}>{+(balance.balance).toFixed(8)}</Text>
+	                            <Text style={styles.price}>{+(balance.balance).toFixed(MAX_DECIMAL)}</Text>
 	                      	</View>
                       </View>
                     </TouchableOpacity>                   

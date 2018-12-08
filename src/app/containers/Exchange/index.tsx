@@ -9,6 +9,8 @@ import {
   isValidAddress,
   numberWithCommas,
   smartTrim,
+  MAX_DECIMAL,
+  MAX_DECIMAL_FIAT
 } from 'app/constants';
 import FeeBox from './FeeBox';
 import QR from './QR';
@@ -134,13 +136,13 @@ class Exchange extends React.Component<any, any>{
           <View>
             <Text style={styles.uppercase}>{`${rel} Balance`.toUpperCase()}{} </Text>
             <View>
-              <Text style={styles.balance}>{balance.balance}</Text>
-              <Text style={styles.pending}>{balance.pending > 0 ? `(${balance.pending} pending)` : ""}</Text>
+              <Text style={styles.balance}>{balance.balance.toFixed(MAX_DECIMAL)}</Text>
+              <Text style={styles.pending}>{balance.pending > 0 ? `(${+balance.pending.toFixed(MAX_DECIMAL)} pending)` : ""}</Text>
             </View>
           </View>
           <View>
             <Text style={styles.uppercase}>{`${priceStore.fiat.name} Value`.toUpperCase()}</Text>
-            <Text style={styles.balance}>{priceStore.fiat.symbol}{numberWithCommas(balance_usd.toFixed(2))}</Text>
+            <Text style={styles.balance}>{priceStore.fiat.symbol}{numberWithCommas(+balance_usd.toFixed(MAX_DECIMAL_FIAT))}</Text>
           </View>
         </View>
        <View style={{zIndex: 1,flexDirection: "row", alignItems: "center"}}>
@@ -238,7 +240,7 @@ class Exchange extends React.Component<any, any>{
                 <View style={{flex: .1, alignItems: "center"}}>
                   <Text style={[styles.tx_box_text, o.kind == "got" && styles.got, o.kind == "sent" && styles.sent]}>{o.kind == "got" ? "IN": "OUT" }</Text>
                 </View>
-                <Text style={[styles.tx_box_text, {flex: .25}]} >{o.value} {o.asset ? o.asset.ticker : rel}</Text>
+                <Text style={[styles.tx_box_text, {flex: .25}]} >{+o.value.toFixed(MAX_DECIMAL)} {o.asset ? o.asset.ticker : rel}</Text>
                 <Text style={[styles.tx_box_text, {flex: .1}]}>{o.fee}</Text>
             </TouchableOpacity>
             )
@@ -256,55 +258,53 @@ class Exchange extends React.Component<any, any>{
       </View>
     	)    
   }
-  send = () => {
+  send = async () => {
     const { configStore, coinStore, exchangeStore, appStore} = this.props.rootStore;
     const { rel, base } = exchangeStore;
     const { addressError, addressField, amountField } = this.state;
     const config = toJS(configStore.config);
 
     const balance = coinStore.balances[rel];
-      return new Promise(async (resolve, reject) => {
+      try{
         const amt = parseFloat(amountField);
         let fees = exchangeStore.fees / getAtomicValue(config, rel, base);
           
         if(addressError || !addressField){
           appStore.setSnackMsg("Invalid Address");
-          reject();
+          throw "Invalid Address";
         }
         if(isNaN(amt)){
           appStore.setSnackMsg("Invalid Amount");
-          reject();
+          throw new Error("Invalid Amount");
         }
         if (balance.balance < amt){
           appStore.setSnackMsg("Not enough balance");
-          reject();
+          throw new Error("Not enough balance");
         }
         if (balance.balance < fees + amt){
           appStore.setSnackMsg("Not enough balance to cover network fees");
-          reject();
+          throw new Error("Not enough balance to cover network fees");
         }
         appStore.setSnackMsg("Transaction is being broadcasted!");
         this.setState({
           isSending: true,
         });            
-        try{
-          const {txid} = await exchangeStore.send(addressField, amt)
-          appStore.setSnackMsg(`Transaction broadcast completed. tx: ${txid}`);
-          this.setState({
-            addressField: "",
-            amountField: "",
-            isSending: false,
-          });
-          resolve();
-        }catch(e){
-          this.setState({
-            isSending: false,
-          });
-          appStore.setSnackMsg("Transaction Failed to broadcast!");
-          reject(e);
-        }
+        const {txid} = await exchangeStore.send(addressField, amt)
+        appStore.setSnackMsg(`Transaction broadcast completed. tx: ${txid}`);
+        this.setState({
+          addressField: "",
+          amountField: "",
+          isSending: false,
+        });
+        resolve();
+      }catch(e){
+        this.setState({
+          isSending: false,
+        });
+        appStore.setSnackMsg("Transaction Failed to broadcast!");
+        throw e;
+      }
         //exchangeStore.syncBalance(false)
-      });    
     }  
 }
 export default Exchange;

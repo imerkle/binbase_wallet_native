@@ -26,13 +26,9 @@ export class ConfigStore {
         });
     }
     getMnemonic = async () => {
-        let res;
-        try {
-            res = await global.storage.load({
+        return await global.storage.load({
                 key: 'mnemonic',
-            });
-        } catch (e) { }
-        return res;
+        });
     }
     @action
     storeConfig = () => {
