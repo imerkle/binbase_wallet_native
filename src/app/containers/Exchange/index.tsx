@@ -53,7 +53,6 @@ const styles = StyleSheet.create({
 	tx_box: {
     	backgroundColor: "rgba(0,0,0,.1)",
     	borderRadius: 4,
-    	padding: 10,
 		  shadowOffset:{  width: 5,  height: 3 },
 		  elevation: 10,
 		  shadowColor: '#141111',
@@ -229,7 +228,7 @@ class Exchange extends React.Component<any, any>{
             </View>
           {txs.map((o,i)=>{ 
             return (
-            <TouchableOpacity key={i} style={[{flexDirection: "row", paddingHorizontal: 8}, styles.tx_box_li ,o.confirmations == 0 && styles.tx_pending]} onPress={()=>{
+            <TouchableOpacity key={i} style={[{flexDirection: "row", paddingHorizontal: 8}, o.confirmations == 0 && styles.tx_pending]} onPress={()=>{
                 Linking.openURL(`${explorer}/tx/${o.hash}`)
                }}>
                 <Text style={[styles.tx_box_text, {flex: .3}]}>{smartTrim(o.hash, 10)}</Text>
@@ -296,7 +295,6 @@ class Exchange extends React.Component<any, any>{
           amountField: "",
           isSending: false,
         });
-        resolve();
       }catch(e){
         this.setState({
           isSending: false,
