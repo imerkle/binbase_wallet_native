@@ -33,7 +33,7 @@
     "build:android": "react-native bundle --entry-file index.js --platform android --dev false --bundle-output android/main.jsbundle --assets-dest ./android"
   },
   "dependencies": {
-    "@cityofzion/neon-js": "^4.2.0",
+    "@cityofzion/neon-js": "^4.3.0",
     "@tradle/react-native-http": "^2.0.1",
     "assert": "^1.4.1",
     "asyncstorage-down": "^4.1.2",
