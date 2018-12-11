@@ -43,10 +43,11 @@ class AppWrapper extends React.Component<any, any>{
         const { appStore, exchangeStore, priceStore, coinStore, configStore } = this.props.rootStore;
         const { base, rel } = exchangeStore;
         const { config } = configStore;
+        const { isUnlocked } = coinStore;
         const sorter = { value: 1, dir: 1 };
         return (
               <SafeAreaView style={styles.container} forceInset={{ top: 'always' }}>
-                  <Menu config={config} rel={rel} base={base} onItemSelected={this.onMenuItemSelected} onItemSelected2={this.onMenuItemSelected2} fiat_prices={priceStore.fiat_prices} fiat={priceStore.fiat} balances={coinStore.balances} toggleSort={this.toggleSort}/>              
+                  <Menu config={config} rel={rel} base={base} onItemSelected={this.onMenuItemSelected} onItemSelected2={this.onMenuItemSelected2} fiat_prices={priceStore.fiat_prices} fiat={priceStore.fiat} balances={coinStore.balances} toggleSort={this.toggleSort} isUnlocked={isUnlocked}/>              
               </SafeAreaView>
           )
         /*

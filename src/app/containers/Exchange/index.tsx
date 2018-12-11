@@ -174,7 +174,7 @@ class Exchange extends React.Component<any, any>{
             <View style={{flexDirection: "row", alignItems: "center"}}>
             <TextInput
               mode="outlined"
-        	  theme={{colors: textInputColors}}
+        	    theme={{colors: textInputColors}}
               error={!!addressError}
               value={addressField}
               label={addressError ? `Invalid ${rel} address` : `Recieving Address`}
@@ -196,7 +196,7 @@ class Exchange extends React.Component<any, any>{
             <View style={{flexDirection: "row", alignItems: "center"}}>
               <TextInput
               	mode="outlined"
-        	  	theme={{colors: textInputColors}}
+        	  	  theme={{colors: textInputColors}}
                 value={amountField.toString()}
                 onChangeText={(text)=>{ this.setState({amountField: text }) }}
                 label={`${rel} Amount to Send`}

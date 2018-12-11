@@ -7,6 +7,7 @@ import { createStores } from 'app/stores/index.ts';
 
 import AppWrapper from 'app/containers/AppWrapper';
 import Exchange from 'app/containers/Exchange';
+import Home from 'app/containers/Home';
 
 import { createDrawerNavigator, createAppContainer } from "react-navigation";
 const DrawerNavigator = createDrawerNavigator({
@@ -14,7 +15,7 @@ const DrawerNavigator = createDrawerNavigator({
     screen: Exchange
   },
   Empty: {
-    screen: ()=>{return (null)}
+    screen: Home,
   }
 },{
   //drawerType: 'slide',

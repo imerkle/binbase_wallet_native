@@ -139,7 +139,7 @@ const styles = StyleSheet.create({
    }
 });
 
-export default function Menu({ config, rel, base, onItemSelected, onItemSelected2, balances, fiat, fiat_prices, toggleSort }) {
+export default function Menu({ config, rel, base, onItemSelected, onItemSelected2, balances, fiat, fiat_prices, toggleSort, isUnlocked }) {
   return (
 	  <View style={styles.menu}>
 	      <View style={styles.leftBar}>
@@ -170,7 +170,7 @@ export default function Menu({ config, rel, base, onItemSelected, onItemSelected
 			       />
 			    </List.Section>
               }
-              { !!base && Object.keys(config).length > 0 &&
+              { !!isUnlocked && !!base && Object.keys(config).length > 0 &&
                <View>
                	<View style={styles.baseheader}>
                			<Text>{config[base].name}</Text>
