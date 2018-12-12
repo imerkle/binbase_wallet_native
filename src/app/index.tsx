@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { Snackbar, DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import { Dimensions, StyleSheet, View, Text } from 'react-native';
 import { observer } from 'mobx-react';
 import { Provider as StoreProvider } from 'mobx-react';
@@ -65,15 +65,16 @@ class AppFragment extends React.Component<any, any>{
     initiate = async () => {
       await rootStore.configStore.setConfig();
       rootStore.priceStore.syncFiatPrices();
-      rootStore.coinStore.generateKeys();
     }  
     render() {
         const { classes } = this.props;
+        const { appStore } = rootStore;
         return (
         <StoreProvider rootStore={rootStore}>
             <PaperProvider theme={theme}>
                 <View style={styles.container}>
                     <AppContainer />
+                    <Snackbar style={{zIndex: 10, backgroundColor: "#000"}} onDismiss={() => {appStore.snackOpen(false)}} visible={appStore.snackopen} >{appStore.snackmsg}</Snackbar>
                 </View>    
             </PaperProvider>
         </StoreProvider>

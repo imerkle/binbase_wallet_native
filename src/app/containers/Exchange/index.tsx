@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { observer, inject } from 'mobx-react';
 import { toJS } from 'mobx';
-import { Snackbar, Button, Text, TextInput, IconButton, } from 'react-native-paper';
+import { Button, Text, TextInput, IconButton, } from 'react-native-paper';
 import { Dimensions, ScrollView, Linking, TouchableOpacity, Modal, View, StyleSheet, Clipboard } from 'react-native';
 import { 
   getAtomicValue,
@@ -253,7 +253,6 @@ class Exchange extends React.Component<any, any>{
         <QRG text={address} visible={this.state.qrshow_visible} onRequestClose={()=>{this.setState({qrshow_visible: false })}} />
 
       </ScrollView>
-      <Snackbar style={{zIndex: 10, backgroundColor: "#000"}} onDismiss={() => {appStore.snackOpen(false)}} visible={appStore.snackopen} >{appStore.snackmsg}</Snackbar>
       </View>
     	)    
   }

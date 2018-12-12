@@ -69,5 +69,7 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+	<key>NSFaceIDUsageDescription</key>
+	<string>$(PRODUCT_NAME) requires FaceID access to allows you quick and secure access.</string>
 </dict>
 </plist>

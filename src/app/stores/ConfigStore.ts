@@ -18,34 +18,28 @@ export class ConfigStore {
         });
         global.storage = storage;
     }
-
-    setMnemonic = (mnemonic) => {
-        global.storage.save({
-            key: 'mnemonic',
-            data: mnemonic,
+    getKey = async (key) => {
+        return await global.storage.load({
+                key,
         });
     }
-    getMnemonic = async () => {
-        return await global.storage.load({
-                key: 'mnemonic',
+    setKey = async (key, data) => {
+        await global.storage.save({
+            key,
+            data,
         });
     }
     @action
     storeConfig = () => {
         let config = configjson;
         this.config = config;
-        global.storage.save({
-            key: 'config',
-            data: config,
-        });
+        this.setKey('config', config);
     }
     @action
     setConfig = async () => {
         let res;
         try {
-            res = await global.storage.load({
-                key: 'config',
-            });
+            res = await this.getKey('config')
             runInAction(() => {
                 this.config = res;
             });

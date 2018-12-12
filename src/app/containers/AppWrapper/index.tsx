@@ -25,6 +25,9 @@ class AppWrapper extends React.Component<any, any>{
     onMenuItemSelected = (base) => {
         this.base = base;
         this.props.rootStore.exchangeStore.setBase(base)
+        if(!base){
+          this.props.navigation.navigate('Empty');
+        }
     }
     onMenuItemSelected2 = (rel) => {
         this.props.rootStore.exchangeStore.setRel(rel)

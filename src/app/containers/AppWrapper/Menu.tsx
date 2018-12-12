@@ -147,7 +147,7 @@ export default function Menu({ config, rel, base, onItemSelected, onItemSelected
 	          <View style={[styles.nib, !base && styles.nib_selected]}></View>
 	            <FAB style={[styles.fab, !base && styles.fab_selected]} icon="home" onPress={() => { onItemSelected("")} } />
 	        </View>
-	         {Object.keys(config).map( (ox, i) => {
+	         {!!isUnlocked && Object.keys(config).map( (ox, i) => {
 	            const o = config[ox];
 	            if(!o.base){
 	              return (null)
@@ -165,8 +165,8 @@ export default function Menu({ config, rel, base, onItemSelected, onItemSelected
               {!base &&
 			    <List.Section>
 			        <List.Item
-			          title="Transaction History" 
-			          description="Show Withdraw and Deposit History"
+			          title="Home" 
+			          description="Generate, Restore or Export Wallet"
 			       />
 			    </List.Section>
               }
@@ -188,7 +188,7 @@ export default function Menu({ config, rel, base, onItemSelected, onItemSelected
                </View>
               }
 
-              { !!base && Object.keys(config).length > 0 &&
+              { !!isUnlocked && !!base && Object.keys(config).length > 0 &&
                 <ScrollView style={styles.assets_menu_container}>
                   { ([base]).concat(config[base].forks || [], Object.keys(config[base].assets || {})).map( (ox, i) =>  {
                     const balance = balances[ox] || {balance: 0};

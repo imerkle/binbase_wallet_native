@@ -3,6 +3,7 @@ package com.dooboo;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.hieuvp.fingerprint.ReactNativeFingerprintScannerPackage;
 import org.reactnative.camera.RNCameraPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.tradle.react.UdpSocketsModule;
@@ -31,6 +32,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new ReactNativeFingerprintScannerPackage(),
             new RNCameraPackage(),
             new VectorIconsPackage(),
             new UdpSocketsModule(),

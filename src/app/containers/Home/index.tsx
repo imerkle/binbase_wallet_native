@@ -2,8 +2,9 @@
 import * as React from 'react';
 import { observer, inject } from 'mobx-react';
 
-import { View } from 'react-native';
-import { Button, Title, Text, TextInput } from 'react-native-paper';
+import { Vibration, TouchableOpacity, ScrollView, View, Clipboard } from 'react-native';
+import { Divider, Checkbox, Surface, Button, IconButton, Title, Text, TextInput } from 'react-native-paper';
+import FingerprintScanner from 'react-native-fingerprint-scanner';
 
 const textInputColors = {background: "#303030", primary: "#FFF", placeholder: "#4D4D4D", disabled: "gray"};
 
@@ -16,10 +17,48 @@ class Home extends React.Component<any, any>{
         mnemonic_paste: "",
         passphrase_paste: "",
         passphrase_unlock: "",
+        useFingerprint: false,
+        unlock_loading: false,
+    }    
+    componentDidMount() {
+      const { coinStore } = this.props.rootStore;
+      if(FingerprintScanner.isSensorAvailable() && !coinStore.isUnlocked){
+        this.unlockFingerPrint();
+      }
+    }
+    componentWillUnmount() {
+      FingerprintScanner.release();
+    } 
+    unlockFingerPrint = async () => {
+      const { appStore, configStore, coinStore } = this.props.rootStore;
+      const useFingerprint = await configStore.getKey("useFingerprint");
+      if(useFingerprint){      
+        const passphrase_unlock = await configStore.getKey("passphraseunlock");
+        try{  
+          await FingerprintScanner.authenticate({ onAttempt: (e)=>{ } })
+          await this.unlockWalletInternal(passphrase_unlock)
+        }catch(e){
+          Vibration.vibrate()
+          appStore.setSnackMsg("Fingerprint Failed!");
+          //unlockFingerPrint();
+        }
+      }
+    } 
+    unlockWalletInternal = async (passphrase_unlock) => {
+        const { appStore, configStore, coinStore } = this.props.rootStore;
+        this.setState({unlock_loading: true})
+        Vibration.vibrate()
+        await coinStore.generateKeys(false, passphrase_unlock)
+        appStore.setSnackMsg("Wallet unlocked!")
+        this.setState({unlock_loading: false})
     }
     unlockWallet = async () => {
-        await this.props.rootStore.coinStore.generateKeys(false, this.state.passphrase_unlock)
-        this.props.rootStore.appStore.setSnackMsg("Wallet unlocked!");
+        const { appStore, configStore, coinStore } = this.props.rootStore;
+        await this.unlockWalletInternal(this.state.passphrase_unlock)
+        configStore.setKey("useFingerprint", this.state.useFingerprint)
+        if(this.state.useFingerprint){
+          configStore.setKey("passphraseunlock", this.state.passphrase_unlock)
+        }
     }
     generateNewWallet = async () => {
         const mnemonic = await this.props.rootStore.coinStore.generateKeys(true, this.state.passphrase);
@@ -38,10 +77,12 @@ class Home extends React.Component<any, any>{
           mnemonic_paste,
           passphrase_paste,
           passphrase_unlock,
+          useFingerprint,
+          unlock_loading,
         } = this.state;
 
         return (
-        <View>
+        <ScrollView style={{margin: 20}}>        
            {!coinStore.isUnlocked &&    
             <View>
               <Title>Unlock Wallet</Title>
@@ -54,14 +95,20 @@ class Home extends React.Component<any, any>{
                     this.setState({passphrase_unlock: text })
                 }}
                 />
+                <TouchableOpacity style={{flexDirection: "row", alignItems: "center"}} onPress={() => { this.setState({ useFingerprint: !useFingerprint }) }}>
+                  <Checkbox status={useFingerprint ? 'checked' : 'unchecked'} />
+                  <Text>Use fingerprint to unlock wallet</Text>
+                </TouchableOpacity>
                 <Button 
-                style={{marginVertical: 10, borderRadius: 5}}
+                style={{backgroundColor: "#E10050", marginVertical: 10, borderRadius: 5}}
                 mode="contained"
-                onPress={this.unlockWallet}>Send</Button>
+                loading={unlock_loading}
+                onPress={this.unlockWallet}>Unlock Wallet</Button>
+                <Divider style={{backgroundColor: "rgba(255,255,255,.2)", marginVertical: 25, marginHorizontal: 40}} />
             </View>                
             }        
-            <View style={{flexDirection: "row"}}>
-                <View style={{flex: 0.5}}>
+            <View>
+                <View>
                   <Title>Generate New Wallet</Title>
                   <TextInput
                     mode="outlined"
@@ -72,12 +119,12 @@ class Home extends React.Component<any, any>{
                         this.setState({passphrase: text })
                     }}
                   />
-                  {mnemonic_copy && 
+                  {!!mnemonic_copy && 
                     <View>
                      <Title>Generated Mnemonic</Title>
                      <Text>Backup this 24 word mnemonic phrase carefully</Text>
                      <View style={{flexDirection: "row", alignItems: "center"}}>
-                        <Surface><Text>{mnemonic_copy}</Text></Surface>
+                        <Surface style={{flex: .99, padding: 20, backgroundColor: "rgba(0,0,0,.5)"}}><Text>{mnemonic_copy}</Text></Surface>
                         <IconButton 
                           icon="content-copy"
                           onPress={()=>{
@@ -92,7 +139,7 @@ class Home extends React.Component<any, any>{
                   mode="contained"
                   onPress={this.generateNewWallet}>Generate New Wallet</Button>
                 </View>
-                <View style={{flex: 0.5}}>
+                <View>
                   <Title>Restore Wallet</Title>
                   <TextInput
                     mode="outlined"
@@ -114,12 +161,12 @@ class Home extends React.Component<any, any>{
                     label={`Your Passphrase`}
                   />
                   <Button 
-                  style={{marginVertical: 10, borderRadius: 5}}
+                  style={{backgroundColor: "#E10050", marginVertical: 10, borderRadius: 5}}
                   mode="contained"
                   onPress={this.restoreWallet}>Restore Wallet</Button>
                 </View>
             </View>
-        </View>
+        </ScrollView>
             );
     }
 }

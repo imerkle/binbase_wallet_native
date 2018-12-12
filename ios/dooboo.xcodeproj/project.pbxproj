@@ -62,6 +62,7 @@
 		D4D7FE5407E84BDDBD5F4AB3 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4B5A991F8BF9462A9C68E15E /* SimpleLineIcons.ttf */; };
 		E9A049CB74C749FABF07DA4D /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B8CF2F89FB7A4C169C869D27 /* Zocial.ttf */; };
 		FFBFD2713AB848DF95A2496C /* libRNCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DEBE9EAA8C6C4908A28A3E87 /* libRNCamera.a */; };
+		15ECE69AE80B404DAC03D231 /* libReactNativeFingerprintScanner.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B3B71317508B43B086E8599C /* libReactNativeFingerprintScanner.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -400,6 +401,8 @@
 		B8CF2F89FB7A4C169C869D27 /* Zocial.ttf */ = {isa = PBXFileReference; name = "Zocial.ttf"; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		E8136718EAC648F2B4945E96 /* RNCamera.xcodeproj */ = {isa = PBXFileReference; name = "RNCamera.xcodeproj"; path = "../node_modules/react-native-camera/ios/RNCamera.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		DEBE9EAA8C6C4908A28A3E87 /* libRNCamera.a */ = {isa = PBXFileReference; name = "libRNCamera.a"; path = "libRNCamera.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		99A19CF7D0234A49BF929D9B /* ReactNativeFingerprintScanner.xcodeproj */ = {isa = PBXFileReference; name = "ReactNativeFingerprintScanner.xcodeproj"; path = "../node_modules/react-native-fingerprint-scanner/ios/ReactNativeFingerprintScanner.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		B3B71317508B43B086E8599C /* libReactNativeFingerprintScanner.a */ = {isa = PBXFileReference; name = "libReactNativeFingerprintScanner.a"; path = "libReactNativeFingerprintScanner.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -436,6 +439,7 @@
 				D2486205F4E04528A716CBDB /* libUdpSockets.a in Frameworks */,
 				E35CB3B9C0A440ECAC958490 /* libRNVectorIcons.a in Frameworks */,
 				FFBFD2713AB848DF95A2496C /* libRNCamera.a in Frameworks */,
+				15ECE69AE80B404DAC03D231 /* libReactNativeFingerprintScanner.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -632,6 +636,7 @@
 				7CECCA1E4B6B45FFB912E8A6 /* UdpSockets.xcodeproj */,
 				1F795F648CA647549863AEED /* RNVectorIcons.xcodeproj */,
 				E8136718EAC648F2B4945E96 /* RNCamera.xcodeproj */,
+				99A19CF7D0234A49BF929D9B /* ReactNativeFingerprintScanner.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1307,6 +1312,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1318,6 +1324,7 @@
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fingerprint-scanner/ios",
 				);
 			};
 			name = Debug;
@@ -1348,6 +1355,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1359,6 +1367,7 @@
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fingerprint-scanner/ios",
 				);
 			};
 			name = Release;
@@ -1388,6 +1397,7 @@
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fingerprint-scanner/ios",
 				);
 			};
 			name = Debug;
@@ -1416,6 +1426,7 @@
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fingerprint-scanner/ios",
 				);
 			};
 			name = Release;
@@ -1455,6 +1466,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1466,6 +1478,7 @@
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fingerprint-scanner/ios",
 				);
 			};
 			name = Debug;
@@ -1505,6 +1518,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1516,6 +1530,7 @@
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fingerprint-scanner/ios",
 				);
 			};
 			name = Release;
@@ -1554,6 +1569,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1564,6 +1580,7 @@
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fingerprint-scanner/ios",
 				);
 			};
 			name = Debug;
@@ -1602,6 +1619,7 @@
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1612,6 +1630,7 @@
 					"$(SRCROOT)/../node_modules/react-native-udp/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-camera/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-fingerprint-scanner/ios",
 				);
 			};
 			name = Release;
